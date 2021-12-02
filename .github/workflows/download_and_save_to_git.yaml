@@ -27,8 +27,7 @@ jobs:
       - name: download csv and upload to s3
         run: |
           Rscript R/download_and_upload_to_git.R
-          
-       - name: Commit results
+      - name: Commit results
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
