@@ -19,6 +19,7 @@ jobs:
         run: |
           install.packages("dplyr")
           install.packages("aws.s3")
+          install.packages("sessioninfo")
         shell: Rscript {0}
       - name: download csv and upload to s3
         run: |
