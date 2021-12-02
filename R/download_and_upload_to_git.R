@@ -35,6 +35,35 @@ if(FALSE){
   fake_old_list_of_date_added <- current_well %>% head(-500) %>% 
     select(well_tag_number) %>%
     mutate(date_added = Sys.Date() - (max(well_tag_number)-well_tag_number)/ 1000)
+} else{
+  fake_old_list_of_date_added <- read_csv("https://raw.githubusercontent.com/SimonCoulombe/schedule_github_actions_to_save_csv_to_amazon_s3/main/data/list_of_date_added.csv")
+
+# code from get_rls_data in  covidtwitterbot
+  # https://stackoverflow.com/questions/25485216/how-to-get-list-files-from-a-github-repository-folder-using-r
+  # req <- GET("https://api.github.com/repos/jeanpaulrsoucy/covid-19-canada-gov-data-montreal/git/trees/master?recursive=1")
+  # stop_for_status(req)
+  # filelist <- unlist(lapply(content(req)$tree, "[", "path"), use.names = F)
+  # liste_tableau_rls_new <- grep("cases-by-rss-and-rls/tableau-rls-new_", filelist, value = TRUE, fixed = TRUE)
+  #
+  #
+  # suppressWarnings(
+  #   csvs <-
+  #     furrr::future_map(
+  #       liste_tableau_rls_new,
+  #       ~ readr::read_csv(
+  #         paste0("https://raw.githubusercontent.com/jeanpaulrsoucy/covid-19-canada-gov-data-montreal/master/", .x),
+  #         col_types = readr::cols(
+  #           No = readr::col_character(),
+  #           RSS = readr::col_character(),
+  #           NoRLS = readr::col_character(),
+  #           RLS = readr::col_character(),
+  #           .default = readr::col_number()
+  #         )
+  #       )
+  #     )
+  # )
+  # end -- this old code has been depre
+  
 }
 
 
@@ -58,6 +87,7 @@ zip(paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Va
     )
 
 
-
+# here is our empty lise of well addresses 
+write_csv("data/addressed_well.csv")
 
 
