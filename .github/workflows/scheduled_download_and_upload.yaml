@@ -1,0 +1,21 @@
+on:
+  schedule:
+    - cron: "40 22 * * *"
+    
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    container: rocker/geospatial
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install aws.s3
+        run: |
+          install.packages("aws.s3")
+        shell: Rscript {0}
+      - name: download csv and upload to s3
+        run: |
+          Rscript R/download_and_upload_to_s3.R
