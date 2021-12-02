@@ -25,9 +25,10 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git commit -m 'data/list_of_date_added.csv' || echo "No changes to commit"
-          git commit -ma 'data/*' || echo "No changes to commit"
-          git push origin || echo "No changes to commit"
+          git add "data/list_of_date_added.csv
+          git add "data/well_tag_number*.csv"
+          git commit -am "add data - automatic update"
+          git push origin
       - name: Session info
         run: |
           options(width = 100)
