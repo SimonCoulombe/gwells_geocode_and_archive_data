@@ -29,7 +29,7 @@ current_well <- read_csv(
   , col_types = col_types_wells # from R/coltypes_we
 ) %>%
   janitor::clean_names()
-
+current_well %>% write_csv("data/current_well.csv")
 # create fake  "historical" wells file without the last 500 rows.
 if(FALSE){
   fake_old_list_of_date_added <- current_well %>% head(120000) %>% 

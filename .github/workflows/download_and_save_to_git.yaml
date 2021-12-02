@@ -1,7 +1,7 @@
 on: 
 #  push:
-#  schedule:
-#    - cron: "5 * * * *"
+  schedule:
+    - cron: "0 23 * * *"
 jobs:
   job1:
     runs-on: ubuntu-latest

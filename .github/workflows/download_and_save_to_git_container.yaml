@@ -25,7 +25,7 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add "data/list_of_date_added.csv
+          git add "data/list_of_date_added.csv"
           git add "data/well_tag_number*.csv"
           git commit -am "add data - automatic update"
           git push origin
