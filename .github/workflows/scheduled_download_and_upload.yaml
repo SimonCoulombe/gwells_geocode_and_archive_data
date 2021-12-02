@@ -1,5 +1,6 @@
-on: [push]
-    
+on: 
+  schedule:
+    - cron: "50 23 * * *"
 jobs:
   job1:
     runs-on: ubuntu-latest
