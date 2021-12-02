@@ -34,7 +34,7 @@ jobs:
           git add "data/well_tag_number*.zip"|| echo "No changes to commit"
           git add "R/test_report.html"|| echo "No changes to commit"
           git add "R/test_github_report.md"|| echo "No changes to commit"
-          git add 'R/test_github_report_files' || echo "No changes to commit"
+          git add 'R/test_github_report_files/*' || echo "No changes to commit"
           git commit -am "add data - automatic update"|| echo "No changes to commit"
           git push origin|| echo "No changes to commit"
       - name: Session info
