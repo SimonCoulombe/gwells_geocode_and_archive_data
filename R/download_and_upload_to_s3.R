@@ -48,7 +48,8 @@ if (TRUE){
     file = paste0(temp_dir, "/well.csv"),
     object = paste0("well/well_", format(Sys.Date(), "%Y%m%d"), ".csv" ),
     bucket = "blogsimoncoulombe",
-    acl = "public-read" # ,
+    acl = "public-read",
+    verbose = TRUE# ,
     # headers=list("Content-Type" = "image/png")
   )
   
