@@ -87,7 +87,7 @@ zip(paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Va
     )
 
 
-# here is our empty lise of well addresses 
-write_csv("data/addressed_well.csv")
+# here is our empty list of well addresses  (run once to initialize)
+#write_csv(well_tags_in_current_wells %>% filter(TRUE == FALSE), "data/addressed_well.csv")
 
 
