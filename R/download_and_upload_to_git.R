@@ -32,7 +32,7 @@ current_well <- read_csv(
 
 # create fake  "historical" wells file without the last 500 rows.
 if(FALSE){
-  fake_old_list_of_date_added <- current_well %>% head(-500) %>% 
+  fake_old_list_of_date_added <- current_well %>% head(120000) %>% 
     select(well_tag_number) %>%
     mutate(date_added = Sys.Date() - (max(well_tag_number)-well_tag_number)/ 1000)
 } else{
@@ -72,6 +72,7 @@ new_wells <- current_well %>%
   anti_join(fake_old_list_of_date_added) %>%
   mutate(date_added = Sys.Date())
 
+new_wells
 
 # this is our  new list of date added, overwrite the old one
 new_list_of_date_added <-

@@ -1,7 +1,7 @@
 on: 
-  push:
-  schedule:
-    - cron: "5 * * * *"
+#  push:
+#  schedule:
+#    - cron: "5 * * * *"
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -32,8 +32,8 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git commit -m 'data/list_of_date_added.csv' || echo "automatic update"
-          git commit -ma 'data' || echo "No changes to commit"
+          git commit -m 'data/list_of_date_added.csv' || echo "No changes to commit"
+          git commit -ma 'data/*' || echo "No changes to commit"
           git push origin || echo "No changes to commit"
       - name: Session info
         run: |
