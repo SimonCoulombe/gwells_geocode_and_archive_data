@@ -1,6 +1,6 @@
 on: 
   schedule:
-    - cron: "56 5 * * *"
+    - cron: "57 4 * * *"
 jobs:
   job1:
     runs-on: ubuntu-latest
