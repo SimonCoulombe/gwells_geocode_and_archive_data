@@ -27,8 +27,7 @@ utils::unzip(temp_zip, files =  "well.csv", exdir = temp_dir)
 current_well <- read_csv(
   paste0(temp_dir, "/well.csv")
   , col_types = col_types_wells # from R/coltypes_we
-) %>%
-  janitor::clean_names()
+) 
 current_well %>% write_csv("data/current_well.csv")
 # create fake  "historical" wells file without the last 500 rows.
 if(FALSE){
@@ -70,7 +69,7 @@ if(FALSE){
 new_wells <- current_well %>%
   select(well_tag_number) %>% 
   anti_join(fake_old_list_of_date_added) %>%
-  mutate(date_added = Sys.Date())
+  mutate(date_added = as.Date(Sys.time() , tz = "America/Vancouver"))
 
 new_wells
 

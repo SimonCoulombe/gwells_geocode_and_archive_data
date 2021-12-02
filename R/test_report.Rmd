@@ -1,0 +1,90 @@
+---
+title: "test"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Test    
+```{r}
+library(dplyr)
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(janitor)
+library(sf)
+library(kableExtra)
+library(mapview)
+source("../R/col_types_wells.R")
+
+bc_yellow <- "#e3a82b"
+bc_blue <- "#234075"
+
+ggplot2::theme_set(theme_light()) 
+options(ggplot2.discrete.fill  = function() scale_fill_viridis_d()) # these scales are colorbliend friendly and start with "cooperators blue"
+options(ggplot2.continuous.fill  = function() scale_fill_viridis_c())
+options(ggplot2.discrete.colour = function() scale_color_viridis_d())
+options(ggplot2.continuous.colour = function() scale_color_viridis_c())
+
+today <- as.Date(Sys.time() , tz = "America/Vancouver")
+start <- today - 14 
+```
+
+```{r}
+current_well <- read_csv("../data/current_well.csv", col_types = col_types_wells )# from R/coltypes_well 
+addressed_wells <- read_csv("../data/addressed_well.csv", col_types =  readr::cols(well_tag_number = col_double()))
+list_of_date_added <- read_csv("../data/list_of_date_added.csv", col_types =  readr::cols(well_tag_number = col_double(), date_added = col_date()))
+
+wells <- current_well %>% 
+  left_join(list_of_date_added) %>%
+  left_join(addressed_wells %>% mutate(addressed = TRUE)) %>%
+  mutate(addressed = tidyr::replace_na(addressed,FALSE)) %>%
+  janitor::clean_names() 
+
+
+#%>%  st_as_sf(coords = c(y= "latitude_decdeg", x = "longitude_decdeg" ), crs = 4326)
+```
+```{r}
+wells %>% count(date_added) %>%
+  ggplot()+
+  geom_line(aes(x = date_added, y = n)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)), limits = c(0, NA)) +
+  labs(
+    title = "New wells per day"
+  )
+```
+
+```{r}
+recent_wells <- wells  %>% 
+  filter(date_added <= today, date_added >= start )
+
+
+
+recent_wells %>% 
+  tail(20) %>% 
+  knitr::kable(
+    caption = "Table showing 20 last  wells",
+    #col.names = colnames(palmerpenguins::penguins),
+    #digits = c(0,0,1,1,1,0,0,0)
+  )  %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>% # striped adds grey background (Defined in the css) to each second row.  hover adds an orange background when hovering above a row (defined in the css) 
+  kableExtra::row_spec(0, background = bc_blue, color = "#fff") # first row is white on cooperators  blue
+
+```
+
+
+
+```{r}
+wells.sf <- recent_wells %>% 
+  tail(100) %>% 
+  filter(!is.na(latitude_decdeg) & !is.na(longitude_decdeg)) %>%
+    st_as_sf(coords = c( "longitude_decdeg", "latitude_decdeg" ), crs = 4326, remove = FALSE) 
+
+
+mapview(wells.sf)
+  
+```
+
