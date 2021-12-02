@@ -1,6 +1,4 @@
-on:
-  schedule:
-    - cron: "44 22 * * *"
+on: [push]
     
 jobs:
   job1:
