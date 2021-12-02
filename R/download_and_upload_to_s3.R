@@ -57,3 +57,4 @@ if (TRUE){
 
 #library(aws.s3)
 # get_bucket(bucket = 'blogsimoncoulombe')
+#
