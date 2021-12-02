@@ -23,3 +23,9 @@ jobs:
       - name: download csv and upload to s3
         run: |
           Rscript R/download_and_upload_to_s3.R
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}          
