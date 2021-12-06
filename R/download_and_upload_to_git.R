@@ -1,6 +1,7 @@
 library(dplyr)
 library(readr)
 library(janitor)
+library(reticulate)
 source("R/col_types_wells.R")
 
 
@@ -18,11 +19,11 @@ lubridate::with_tz(Sys.time(), "America/Vancouver")
 as.Date(Sys.time() , tz = "America/Vancouver")
 
 # download the wells zip  to a temporary file
-url <- "https://s3.ca-central-1.amazonaws.com/gwells-export/export/v2/gwells.zip"
-temp_zip <- tempfile()
-download.file(url, destfile = temp_zip)
-temp_dir <- tempdir()
-utils::unzip(temp_zip, files =  "well.csv", exdir = temp_dir)
+#url <- "https://s3.ca-central-1.amazonaws.com/gwells-export/export/v2/gwells.zip"
+#temp_zip <- tempfile()
+#download.file(url, destfile = temp_zip)
+#temp_dir <- tempdir()
+#utils::unzip(temp_zip, files =  "well.csv", exdir = temp_dir)
 
 current_well <- read_csv(
   paste0(temp_dir, "/well.csv")

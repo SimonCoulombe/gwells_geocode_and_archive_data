@@ -11,19 +11,10 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
     steps:
       - uses: actions/checkout@v2
-#      - name: dont install libraries, taken care by docker image 
-#        run: |
-#          install.packages("janitor")
-#          install.packages("sessioninfo")
-#          install.packages("kableExtra")
-#          install.packages("mapview")
-#        shell: Rscript {0}
+
       - name: download, geocode and qa
         run: |
           Rscript R/geocode_and_qa.R
-#      - name: Update report  (this code works, but not used)
-#        run: |
-#          Rscript -e 'rmarkdown::render("R/test_report.Rmd")'          
       - name: Commit results
         run: |
           git config --local user.email "actions@github.com"
@@ -32,9 +23,6 @@ jobs:
           git add "data/wells_geocoded.csv"|| echo "No changes to commit"
           git add "data/wells_locationqa.csv"|| echo "No changes to commit"
           git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-#          git add "R/test_report.html"|| echo "No changes to commit"
-#          git add "R/test_github_report.md"|| echo "No changes to commit"
-#          git add 'R/test_github_report_files/*' || echo "No changes to commit"
           git commit -am "add data - automatic update"|| echo "No changes to commit"
           git push origin|| echo "No changes to commit"
       - name: Session info
