@@ -5,7 +5,7 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    container: rocker/geospatial
+    container: morglum/monrstudio
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
