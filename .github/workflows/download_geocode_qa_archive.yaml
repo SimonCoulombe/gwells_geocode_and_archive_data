@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: run download Rscript
         run: |
-           python python/download.sh
+           ./python/download.sh
 
       # - name: download, geocode and qa
       #   run: |
