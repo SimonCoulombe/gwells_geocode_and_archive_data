@@ -11,23 +11,26 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
     steps:
       - uses: actions/checkout@v2
+      - name: run download Rscript
+        run: |
+           python python/download.sh
 
-      - name: download, geocode and qa
-        run: |
-          Rscript R/geocode_and_qa.R
-      - name: Commit results
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
-          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
-          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
-          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-          git commit -am "add data - automatic update"|| echo "No changes to commit"
-          git push origin|| echo "No changes to commit"
-      - name: Session info
-        run: |
-          options(width = 100)
-          pkgs <- installed.packages()[, "Package"]
-          sessioninfo::session_info(pkgs, include_base = TRUE)
-        shell: Rscript {0}          
+      # - name: download, geocode and qa
+      #   run: |
+      #     Rscript R/geocode_and_qa.R
+      # - name: Commit results
+      #   run: |
+      #     git config --local user.email "actions@github.com"
+      #     git config --local user.name "GitHub Actions"
+      #     git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+      #     git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+      #     git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+      #     git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+      #     git commit -am "add data - automatic update"|| echo "No changes to commit"
+      #     git push origin|| echo "No changes to commit"
+      # - name: Session info
+      #   run: |
+      #     options(width = 100)
+      #     pkgs <- installed.packages()[, "Package"]
+      #     sessioninfo::session_info(pkgs, include_base = TRUE)
+      #   shell: Rscript {0}          
