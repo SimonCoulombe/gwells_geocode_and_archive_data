@@ -35,7 +35,7 @@ jobs:
           ls data/*          
       - name: prepare csvs for geocode input
         run: |
-          Rscript R/prepare_geocode.R
+          Rscript R/prep_geocode.R
       - name: ls *
         run: |
           ls * -lh
