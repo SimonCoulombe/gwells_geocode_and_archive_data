@@ -28,7 +28,7 @@ if(FALSE){
     mutate(date_added = Sys.Date() - (max(well_tag_number)-well_tag_number)/ 1000)
 } else{
   gwells_data_first_appearance <-
-    read_csv("https://raw.githubusercontent.com/SimonCoulombe/gwells_geocode_and_archive_data/main/data/gwells_data_first_appearance.csv",
+    read_csv("github_data/gwells_data_first_appearance.csv",
              col_types = col_types_wells)
 }
 

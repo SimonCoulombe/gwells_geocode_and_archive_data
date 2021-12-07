@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - name : copy gwells_geocodeqa script
         run: | 
+          mv data github_data
           cp /GWELLS_LocationQA/gwells_locationqa.py /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/
       - name: run download script
         run:  |
@@ -23,6 +24,9 @@ jobs:
       - name: list files 
         run:  |
           ls *
+      - name: archive new wells
+        run: |
+          Rscript R/archive_new_wells.R            
          
          
            
