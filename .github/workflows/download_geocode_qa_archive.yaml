@@ -27,40 +27,36 @@ jobs:
       - name: archive new wells
         run: |
           Rscript R/archive_new_wells.R            
-         
-         
-           
-           
-      # - name: list files  data
-      #   run:  |
-      #     ls data/*          
-      #  - name: archive new wells
-      #    run: |
-      #      Rscript R/archive_new_wells.R          
-      # - name: list files  again
-      #   run:  |
-      #     ls *
-      # - name: list files  data again
-      #   run:  |
-      #     ls data/*          
-#
-#
-      # - name: download, geocode and qa
-      #   run: |
-      #     Rscript R/geocode_and_qa.R
-      # - name: Commit results
-      #   run: |
-      #     git config --local user.email "actions@github.com"
-      #     git config --local user.name "GitHub Actions"
-      #     git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
-      #     git add "data/wells_geocoded.csv"|| echo "No changes to commit"
-      #     git add "data/wells_locationqa.csv"|| echo "No changes to commit"
-      #     git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-      #     git commit -am "add data - automatic update"|| echo "No changes to commit"
-      #     git push origin|| echo "No changes to commit"
-      # - name: Session info
-      #   run: |
-      #     options(width = 100)
-      #     pkgs <- installed.packages()[, "Package"]
-      #     sessioninfo::session_info(pkgs, include_base = TRUE)
-      #   shell: Rscript {0}          
+      - name: list files  data
+       run:  |
+         ls data/*          
+      - name: run geocode
+        run: |
+          Rscript R/run_geocode.R
+      - name: ls *
+        run: |
+          ls * 
+      - name: copy esa.tif 
+        run: |
+          cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
+      - name: run quality assurance
+        run: |
+          Rscript R/run_qa.R
+      - name: ls *
+        run: |
+          ls * 
+      - name: commit that shit  
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+        git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+        git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+        git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+        git commit -am "add data - automatic update"|| echo "No changes to commit"
+        git push origin|| echo "No changes to commit"
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}

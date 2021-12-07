@@ -19,9 +19,8 @@ lubridate::with_tz(Sys.time(), "America/Vancouver")
 # voici la date de vancouver
 as.Date(Sys.time() , tz = "America/Vancouver")
 
-current_well <- read_csv("data/wells.csv"
-                         , col_types = col_types_wells # from R/coltypes_we
-)
+current_well <- read_csv("data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
+
 
 if(FALSE){
   gwells_data_first_appearance <- current_well %>% head(120000) %>%
@@ -55,4 +54,4 @@ zip(paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Va
     paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Vancouver"), "%Y%m%d")  ,".csv")
 )
 
-new_wells
+
