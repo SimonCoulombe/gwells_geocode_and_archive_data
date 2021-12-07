@@ -13,11 +13,10 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
     steps:
       - uses: actions/checkout@v2
-      - name: copy python script / run gwells_locationqa download 
+      - name: copy python script and  run gwells_locationqa download 
         run:  |
           cp /GWELLS_LocationQA/gwells_locationqa.py /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/
           ./python/download.sh
-          ls *
       - name: list files 
         run:  |
           ls *
@@ -27,10 +26,10 @@ jobs:
        - name: archive new wells
          run: |
            Rscript R/archive_new_wells.R          
-      - name: list files 
+      - name: list files  again
         run:  |
           ls *
-      - name: list files  data
+      - name: list files  data again
         run:  |
           ls data/*          
 #
