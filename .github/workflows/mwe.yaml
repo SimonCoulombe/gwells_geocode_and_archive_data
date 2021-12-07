@@ -1,0 +1,16 @@
+on: 
+  push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    container: 
+      image: rocker/rstudio
+    steps:
+      - uses: actions/checkout@v2
+      - name: run ls
+        run: 
+          ls
+      - name: where am i?
+        run:  
+          pwd
