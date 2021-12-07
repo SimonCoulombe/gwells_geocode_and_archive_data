@@ -90,6 +90,15 @@ jobs:
       - name: ls *
         run: |
           ls data/* -lh                            
+      - name: move archived zip files back from github_data to data so that we dont delete them from repo
+        run: |
+          mv -n mv github_data/well_tag_number*.zip data/ 
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh   
           
       - name: commit that shit  
         run: |      
