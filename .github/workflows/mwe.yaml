@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: rocker/rstudio
+      options: -v /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/prout:/GWELLS_LocationQA/:rw
     steps:
       - uses: actions/checkout@v2
       - name: run ls
