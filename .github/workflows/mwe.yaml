@@ -7,7 +7,7 @@ jobs:
     container: 
       image: morglum/monrstudio
       #options: -v /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/prout:/GWELLS_LocationQA/:rw
-      options: -v /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/prout:/GWELLS_LocationQA/:rw
+      options: -v /GWELLS_LocationQA/:/__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/prout:rw
     steps:
       - uses: actions/checkout@v2
       - name: run ls
