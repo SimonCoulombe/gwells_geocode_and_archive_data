@@ -13,7 +13,8 @@ old_qa  <- read_csv("github_data/gwells_locationqa.csv", col_types = col_types_w
 new_qa <- read_csv("gwells_locationqa.csv", col_types = col_types_wells) %>%
   select(-one_of(c("Unnamed: 0")))
 
-all_qa <- bind_rows(old_qa, new_qa)
+all_qa <- bind_rows(old_qa, new_qa) %>%
+  arrange(well_tag_number)
 
 write_csv(all_qa, "data/gwells_locationqa.csv")
 

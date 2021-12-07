@@ -19,6 +19,7 @@ lubridate::with_tz(Sys.time(), "America/Vancouver")
 # voici la date de vancouver
 as.Date(Sys.time() , tz = "America/Vancouver")
 
+# readthe frehsly downloaded data/wells.csv downloaded by the python script.
 current_well <- read_csv("data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
 
 
