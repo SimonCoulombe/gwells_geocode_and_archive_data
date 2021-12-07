@@ -8,6 +8,7 @@ source("R/col_types_wells.R")
 #------------------------------------------------------------
 # qa  wells that have never been geocoded
 #------------------------------------------------------------
+gwells_data_first_appearance <- read_csv("data/gwells_data_first_appearance.csv", col_types = col_types_wells)
 all_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_wells)
 
 old_qa  <- read_csv("github_data/gwells_locationqa.csv", col_types = col_types_wells) %>%
