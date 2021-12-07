@@ -28,8 +28,8 @@ jobs:
         run: |
           Rscript R/archive_new_wells.R            
       - name: list files  data
-       run:  |
-         ls data/*          
+        run:  |
+          ls data/*          
       - name: run geocode
         run: |
           Rscript R/run_geocode.R
