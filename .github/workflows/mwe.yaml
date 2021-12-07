@@ -1,5 +1,7 @@
 on: 
-  push
+  push:  
+    paths: 
+      - .github/workflows/mwe.yaml
 
 jobs:
   job1:

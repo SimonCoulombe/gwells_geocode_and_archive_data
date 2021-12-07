@@ -1,7 +1,9 @@
 on: 
   push:
-  schedule:
-    - cron: "5 * * * *"
+    paths : 
+      - .github/workflows/download_and_save_to_git_container.yaml
+#  schedule:
+#    - cron: "5 * * * *"
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -13,19 +15,19 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
     steps:
       - uses: actions/checkout@v2
-      - name: Install libraries
-        run: |
-          install.packages("janitor")
-          install.packages("sessioninfo")
-          install.packages("kableExtra")
-          install.packages("mapview")
-        shell: Rscript {0}
+#      - name: dont install libraries, taken care by docker image 
+#        run: |
+#          install.packages("janitor")
+#          install.packages("sessioninfo")
+#          install.packages("kableExtra")
+#          install.packages("mapview")
+#        shell: Rscript {0}
       - name: download csv and date_Added column
         run: |
           Rscript R/download_and_upload_to_git.R
-      - name: Update report
-        run: |
-          Rscript -e 'rmarkdown::render("R/test_report.Rmd")'          
+#      - name: Update report  (this code works, but not used)
+#        run: |
+#          Rscript -e 'rmarkdown::render("R/test_report.Rmd")'          
       - name: Commit results
         run: |
           git config --local user.email "actions@github.com"
