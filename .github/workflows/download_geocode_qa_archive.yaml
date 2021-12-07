@@ -2,6 +2,9 @@ on:
   push:
     paths:
       - .github/workflows/download_geocode_qa_archive.yaml
+      - R/archive_new_wells.R
+      - R/run_geocode.R
+      - R/run_qa.R
 jobs:
   job1:
     runs-on: ubuntu-latest
