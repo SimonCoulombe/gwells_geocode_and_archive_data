@@ -46,14 +46,15 @@ jobs:
         run: |
           ls * 
       - name: commit that shit  
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
-        git add "data/wells_geocoded.csv"|| echo "No changes to commit"
-        git add "data/wells_locationqa.csv"|| echo "No changes to commit"
-        git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-        git commit -am "add data - automatic update"|| echo "No changes to commit"
-        git push origin|| echo "No changes to commit"
+        run: |      
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+          git commit -am "add data - automatic update"|| echo "No changes to commit"
+          git push origin|| echo "No changes to commit"
       - name: Session info
         run: |
           options(width = 100)
