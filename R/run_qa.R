@@ -40,4 +40,6 @@ if(nrow(to_qa_geocoded)> 0){
   all_qa <- bind_rows(old_qa, new_qa)
   
   write_csv(all_qa, "data/gwells_locationqa.csv")
+} else {
+  write_csv(old_qa, "data/gwells_locationqa.csv")
 }

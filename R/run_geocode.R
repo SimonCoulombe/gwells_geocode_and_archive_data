@@ -25,9 +25,14 @@ if(nrow(to_geocode)> 0){
     i <- i + 1
     Sys.sleep(1)
   }
-}
-newly_geocoded <- read_csv("data/wells_geocoded.csv")
-all_geocoded <-
-  bind_rows(geocoded, newly_geocoded)
+  
+  newly_geocoded <- read_csv("data/wells_geocoded.csv")
+  all_geocoded <-
+    bind_rows(geocoded, newly_geocoded)
 
-write_csv(all_geocoded, "data/wells_geocoded.csv")
+  write_csv(all_geocoded, "data/wells_geocoded.csv")  
+} else {
+  write_csv(geocoded, "data/wells_geocoded.csv")
+}
+
+
