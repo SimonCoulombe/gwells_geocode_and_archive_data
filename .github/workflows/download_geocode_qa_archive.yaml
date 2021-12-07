@@ -26,7 +26,7 @@ jobs:
           ./python/download.sh
       - name: list files 
         run:  |
-          ls *
+          ls * -lh
       - name: archive new wells
         run: |
           Rscript R/archive_new_wells.R            
@@ -38,7 +38,19 @@ jobs:
           Rscript R/run_geocode.R
       - name: ls *
         run: |
-          ls * 
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh
+      - name: run geocode script
+        run:  |
+          ./python/geocode.sh          
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh        
       - name: copy esa.tif 
         run: |
           cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
@@ -47,7 +59,7 @@ jobs:
           Rscript R/run_qa.R
       - name: ls *
         run: |
-          ls * 
+          ls *  -lh
       - name: commit that shit  
         run: |      
           git config --local user.email "actions@github.com"
