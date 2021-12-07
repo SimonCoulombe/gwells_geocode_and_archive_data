@@ -1,7 +1,9 @@
 on: 
-#  push:
-  schedule:
-    - cron: "0 23 * * *"
+  push:
+    paths:  
+      - .github/workflows/scheduled_download_and_upload.yaml
+  #schedule:
+  #  - cron: "0 23 * * *"
 jobs:
   job1:
     runs-on: ubuntu-latest
