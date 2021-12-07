@@ -1,7 +1,7 @@
 on: 
   push:
     paths:
-      .github/workflows/download_and_save_to_git.yaml
+      - .github/workflows/download_and_save_to_git.yaml
   #schedule:
 #    - cron: "0 23 * * *"
 jobs:
