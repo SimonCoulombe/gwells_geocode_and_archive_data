@@ -63,9 +63,9 @@ jobs:
       - name: copy esa.tif 
         run: |
           cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
-      - name: run quality assurance
+      - name: prepare csv for  quality assurance
         run: |
-          Rscript R/run_qa.R
+          Rscript R/prep_qa.R
       - name: ls *
         run: |
           ls * -lh
