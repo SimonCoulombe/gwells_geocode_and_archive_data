@@ -51,6 +51,15 @@ jobs:
       - name: ls *
         run: |
           ls data/* -lh        
+      - name: clean afer geocode
+        run: |
+          Rscript R/clean_after_geocode.R          
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh                  
       - name: copy esa.tif 
         run: |
           cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
@@ -59,7 +68,29 @@ jobs:
           Rscript R/run_qa.R
       - name: ls *
         run: |
-          ls *  -lh
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh        
+      - name: run qa script
+        run:  |
+          ./python/qa.sh          
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh        
+      - name: clean afer qa
+        run: |
+          Rscript R/clean_after_qa.R          
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh                            
+          
       - name: commit that shit  
         run: |      
           git config --local user.email "actions@github.com"
