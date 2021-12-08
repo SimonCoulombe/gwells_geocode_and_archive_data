@@ -4,10 +4,10 @@ library(janitor)
 source("R/col_types_wells.R")
 
 # this is the list of wells we already geocoded
-geocoded <- read_csv("github_data/wells_geocoded.csv", col_types = col_types_wells)
+geocoded <- read_csv("github_data/wells_geocoded.csv", col_types = col_types_geocoded)
 
 # this is the list of well we geocoded today
-newly_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_wells)
+newly_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_geocoded)
 
 # update list of geocoded wells
 all_geocoded <- bind_rows(geocoded,newly_geocoded) %>%

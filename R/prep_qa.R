@@ -13,11 +13,10 @@ source("R/col_types_wells.R")
 gwells_data_first_appearance <- read_csv("data/gwells_data_first_appearance.csv", col_types = col_types_wells)
 
 # this is all the well that have ever been geocoded
-all_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_wells)
+all_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_geocoded)
 
 # this is the wells that have already been "qa-ed"
-old_qa  <- read_csv("github_data/gwells_locationqa.csv", col_types = col_types_wells) %>%
-  select(-one_of(c("Unnamed: 0")))
+old_qa  <- read_csv("github_data/gwells_locationqa.csv", col_types = col_types_qa) 
 
 
 # today we will qa the well that have already been geocoded but never  qa'ed

@@ -10,7 +10,8 @@ source("R/col_types_wells.R")
 gwells_data_first_appearance <- read_csv("data/gwells_data_first_appearance.csv", col_types = col_types_wells)
 
 # read the list of wells that have already been geocoded  
-geocoded <- read_csv("github_data/wells_geocoded.csv")
+geocoded <- read_csv("github_data/wells_geocoded.csv", col_types = col_types_geocoded)
+  
 
 # this is the list of wells that need geocoding
 to_geocode <- gwells_data_first_appearance %>%
