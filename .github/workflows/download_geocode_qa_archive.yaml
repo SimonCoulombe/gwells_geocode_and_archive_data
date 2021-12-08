@@ -36,6 +36,17 @@ jobs:
       - name: print the gwells_data_first_appearance csv
         run:  |
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/gwells_data_first_appearance.csv          
+      - name: commit that shit  
+        run: |      
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+          git commit -am "add data - automatic update"|| echo "No changes to commit"
+          git push origin|| echo "No changes to commit"          
+          
       - name: prepare csvs for geocode input
         run: |
           Rscript R/prep_geocode.R
@@ -77,6 +88,16 @@ jobs:
       - name: copy esa.tif 
         run: |
           cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
+      - name: commit that shit  
+        run: |      
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+          git commit -am "add data - automatic update"|| echo "No changes to commit"
+          git push origin|| echo "No changes to commit"          
       - name: prepare csv for  quality assurance
         run: |
           Rscript R/prep_qa.R
