@@ -35,6 +35,7 @@ jobs:
           ls data/*          
       - name: print the gwells_data_first_appearance csv
         run:  |
+          source activate gwells_locationqa
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/gwells_data_first_appearance.csv          
       - name: commit that shit  
         run: |      
@@ -58,6 +59,7 @@ jobs:
           ls data/* -lh
       - name: print the wells csv that will be geocoded
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells.csv          
           
       - name: run geocode python script
@@ -71,6 +73,7 @@ jobs:
           ls data/* -lh        
       - name: print the freshly geocoded wells
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells_geocoded.csv          
                     
       - name: clean afer geocode
@@ -84,6 +87,7 @@ jobs:
           ls data/* -lh            
       - name: print the newly aggregated geocoded wells
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells_geocoded.csv                    
       - name: copy esa.tif 
         run: |
@@ -109,15 +113,18 @@ jobs:
           ls data/* -lh        
       - name: print the table of wells about to be QAed
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells.csv                              
       - name: print the table of wells_geocoded about to be QAed
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells_geocoded.csv                                        
       - name: run qa script
         run:  |
           ./python/qa.sh          
       - name: print the freshly QAed wells
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/gwells_locationqa.csv    
       - name: ls *
         run: |
@@ -136,6 +143,7 @@ jobs:
           ls data/* -lh                  
       - name: print the new aggregated QAed wells
         run:  |
+          source activate gwells_locationqa        
           python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/gwells_locationqa.csv              
       - name: move archived zip files back from github_data to data so that we dont delete them from repo
         run: |
