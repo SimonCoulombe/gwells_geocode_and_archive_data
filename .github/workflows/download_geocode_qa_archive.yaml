@@ -93,21 +93,9 @@ jobs:
       - name: ls *
         run: |
           ls data/* -lh        
-      - name: print the table of wells about to be QAed
-        run:  |
-          source activate gwells_locationqa        
-          python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells.csv                              
-      - name: print the table of wells_geocoded about to be QAed
-        run:  |
-          source activate gwells_locationqa        
-          python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/wells_geocoded.csv                                        
       - name: run qa script
         run:  |
           ./python/qa.sh          
-      - name: print the freshly QAed wells
-        run:  |
-          source activate gwells_locationqa        
-          python -c 'import sys,pandas; c = pandas.read_csv(sys.stdin); [print(c.transpose())];' < /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/gwells_locationqa.csv    
       - name: ls *
         run: |
           ls * -lh
