@@ -1,0 +1,383 @@
+library(DBI)
+library(readxl)
+library(dplyr)
+library(readr)
+
+pre_geocoded <- readxl::read_excel("~/git/db_test/GWELLS_AgriculureGeocoderData_WTN_24Nov2021.xlsx")
+con1 <- DBI::dbConnect(
+  RPostgreSQL::PostgreSQL(),
+  dbname = Sys.getenv("BCGOV_DB"),
+  host = Sys.getenv("BCGOV_HOST"),
+  user = Sys.getenv("BCGOV_USR"),
+  password=Sys.getenv("BCGOV_PWD")
+)
+
+
+
+dbListTables(con1)
+
+
+dbWriteTable(conn = con1, 
+             name = "iris", 
+             value = iris, 
+             row.names = FALSE, 
+             overwrite = TRUE)
+
+
+dbReadTable(con1, "iris")
+
+
+
+# https://db.rstudio.com/getting-started/database-queries
+
+
+my_means <- tbl(con1, "iris") %>%
+  group_by(Species) %>%
+  summarise(
+   pouet = mean(Petal.Length) 
+  ) %>%
+  collect()
+
+
+
+#col_types_wells are the column types of each columns in the well.csv file. 
+# they were obtaining by guessing on the first 120 000 rows, then getting the column types using  readr::spec()
+#current_well <- read_csv(paste0(temp_dir, "/well.csv"), guess_max = 120000) 
+#spec(current_well)
+
+col_types_wells <- readr::cols(
+  well_tag_number = col_double(),
+  identification_plate_number = col_double(),
+  well_identification_plate_attached = col_character(),
+  well_status_code = col_character(),
+  well_class_code = col_character(),
+  well_subclass = col_character(),
+  licenced_status_code = col_character(),
+  intended_water_use_code = col_character(),
+  observation_well_number = col_character(),
+  obs_well_status_code = col_character(),
+  water_supply_system_name = col_character(),
+  water_supply_system_well_name = col_character(),
+  street_address = col_character(),
+  city = col_character(),
+  legal_lot = col_character(),
+  legal_plan = col_character(),
+  legal_district_lot = col_character(),
+  legal_block = col_character(),
+  legal_section = col_character(),
+  legal_township = col_character(),
+  legal_range = col_character(),
+  land_district_code = col_character(),
+  legal_pid = col_double(),
+  well_location_description = col_character(),
+  latitude_Decdeg = col_double(),
+  longitude_Decdeg = col_double(),
+  utm_zone_code = col_double(),
+  utm_northing = col_double(),
+  utm_easting = col_double(),
+  coordinate_acquisition_code = col_character(),
+  construction_start_date = col_date(format = ""),
+  construction_end_date = col_date(format = ""),
+  alteration_start_date = col_date(format = ""),
+  alteration_end_date = col_date(format = ""),
+  decommission_start_date = col_date(format = ""),
+  decommission_end_date = col_date(format = ""),
+  driller_name = col_character(),
+  consultant_name = col_character(),
+  consultant_company = col_character(),
+  diameter_inches = col_character(),
+  `total_depth_drilled_ft-bgl` = col_double(),
+  `finished_well_depth_ft-bgl` = col_double(),
+  final_casing_stick_up_inches = col_double(),
+  `bedrock_depth_ft-bgl` = col_double(),
+  `ground_elevation_ft-asl` = col_double(),
+  ground_elevation_method_code = col_character(),
+  `static_water_level_ft-btoc` = col_double(),
+  well_yield_usgpm = col_double(),
+  well_yield_unit_code = col_character(),
+  artesian_flow_usgpm = col_double(),
+  artesian_pressure_psi = col_double(),
+  well_cap_type = col_character(),
+  well_disinfected_code = col_character(),
+  well_orientation_code = col_character(),
+  alternative_specs_submitted = col_character(),
+  surface_seal_material_code = col_character(),
+  surface_seal_method_code = col_character(),
+  surface_seal_depth_ft = col_double(),
+  backfill_type = col_character(),
+  backfill_depth_ft = col_double(),
+  liner_material_code = col_character(),
+  liner_diameter_inches = col_double(),
+  liner_thickness_inches = col_double(),
+  surface_seal_thickness_inches = col_double(),
+  `liner_from_ft-bgl` = col_double(),
+  `liner_to_ft-bgl` = col_double(),
+  screen_intake_method_code = col_character(),
+  screen_type_code = col_character(),
+  screen_material_code = col_character(),
+  other_screen_material = col_character(),
+  screen_information = col_character(),
+  screen_opening_code = col_character(),
+  screen_bottom_code = col_character(),
+  other_screen_bottom = col_character(),
+  filter_pack_from_ft = col_double(),
+  filter_pack_to_ft = col_double(),
+  filter_pack_material_code = col_character(),
+  filter_pack_thickness_inches = col_double(),
+  filter_pack_material_size_code = col_character(),
+  development_hours = col_double(),
+  development_notes = col_character(),
+  water_quality_colour = col_character(),
+  water_quality_odour = col_character(),
+  yield_estimation_method_code = col_character(),
+  yield_estimation_rate_usgpm = col_double(),
+  yield_estimation_duration_hours = col_double(),
+  `static_level_before_test_ft-btoc` = col_double(),
+  `drawdown_ft-btoc` = col_double(),
+  hydro_fracturing_performed = col_character(),
+  hydro_fracturing_yield_increase = col_double(),
+  decommission_reason = col_character(),
+  decommission_method_code = col_character(),
+  decommission_details = col_character(),
+  decommission_sealant_material = col_character(),
+  decommission_backfill_material = col_character(),
+  comments = col_character(),
+  ems = col_character(),
+  person_responsible = col_character(),
+  company_of_person_responsible = col_character(),
+  aquifer_id = col_double(),
+  avi_years = col_character(),
+  storativity = col_double(),
+  `transmissivity_m^2/s` = col_double(),
+  `hydraulic_conductivity_m/s` = col_double(),
+  `specific_storage_1/m` = col_character(),
+  specific_yield = col_double(),
+  testing_method = col_character(),
+  testing_duration_hours = col_double(),
+  analytic_solution_type = col_character(),
+  boundary_effect_code = col_character(),
+  aquifer_lithology_code = col_character(),
+  `artesian_pressure_head_ft-agl` = col_double(),
+  artesian_conditions = col_character()
+)
+
+col_types_geocoded <- 
+  cols(
+    X1 = col_double(),
+    fullAddress = col_character(),
+    siteName = col_character(),
+    unitDesignator = col_character(),
+    unitNumber = col_double(),
+    unitNumberSuffix = col_character(),
+    civicNumber = col_double(),
+    civicNumberSuffix = col_character(),
+    streetName = col_character(),
+    streetType = col_character(),
+    isStreetTypePrefix = col_character(),
+    streetDirection = col_character(),
+    isStreetDirectionPrefix = col_character(),
+    streetQualifier = col_character(),
+    localityName = col_character(),
+    localityType = col_character(),
+    electoralArea = col_character(),
+    provinceCode = col_character(),
+    locationPositionalAccuracy = col_character(),
+    locationDescriptor = col_character(),
+    siteID = col_character(),
+    blockID = col_double(),
+    fullSiteDescriptor = col_character(),
+    accessNotes = col_character(),
+    siteStatus = col_character(),
+    siteRetireDate = col_date(format = ""),
+    changeDate = col_date(format = ""),
+    isOfficial = col_character(),
+    distance = col_double(),
+    well_tag_number = col_double()
+  )
+
+
+
+
+col_types_qa <- readr::cols(
+  well_tag_number = col_double(),
+  identification_plate_number = col_double(),
+  well_identification_plate_attached = col_character(),
+  well_status_code = col_character(),
+  well_class_code = col_character(),
+  well_subclass = col_character(),
+  licenced_status_code = col_character(),
+  intended_water_use_code = col_character(),
+  observation_well_number = col_character(),
+  obs_well_status_code = col_character(),
+  water_supply_system_name = col_character(),
+  water_supply_system_well_name = col_character(),
+  street_address = col_character(),
+  city = col_character(),
+  legal_lot = col_character(),
+  legal_plan = col_character(),
+  legal_district_lot = col_character(),
+  legal_block = col_character(),
+  legal_section = col_character(),
+  legal_township = col_character(),
+  legal_range = col_character(),
+  land_district_code = col_character(),
+  legal_pid = col_double(),
+  well_location_description = col_character(),
+  latitude_Decdeg = col_double(),
+  longitude_Decdeg = col_double(),
+  utm_zone_code = col_double(),
+  utm_northing = col_double(),
+  utm_easting = col_double(),
+  coordinate_acquisition_code = col_character(),
+  construction_start_date = col_date(format = ""),
+  construction_end_date = col_date(format = ""),
+  alteration_start_date = col_date(format = ""),
+  alteration_end_date = col_date(format = ""),
+  decommission_start_date = col_date(format = ""),
+  decommission_end_date = col_date(format = ""),
+  driller_name = col_character(),
+  consultant_name = col_character(),
+  consultant_company = col_character(),
+  diameter_inches = col_character(),
+  `total_depth_drilled_ft-bgl` = col_double(),
+  `finished_well_depth_ft-bgl` = col_double(),
+  final_casing_stick_up_inches = col_double(),
+  `bedrock_depth_ft-bgl` = col_double(),
+  `ground_elevation_ft-asl` = col_double(),
+  ground_elevation_method_code = col_character(),
+  `static_water_level_ft-btoc` = col_double(),
+  well_yield_usgpm = col_double(),
+  well_yield_unit_code = col_character(),
+  artesian_flow_usgpm = col_double(),
+  artesian_pressure_psi = col_double(),
+  well_cap_type = col_character(),
+  well_disinfected_code = col_character(),
+  well_orientation_code = col_character(),
+  alternative_specs_submitted = col_character(),
+  surface_seal_material_code = col_character(),
+  surface_seal_method_code = col_character(),
+  surface_seal_depth_ft = col_double(),
+  backfill_type = col_character(),
+  backfill_depth_ft = col_double(),
+  liner_material_code = col_character(),
+  liner_diameter_inches = col_double(),
+  liner_thickness_inches = col_double(),
+  surface_seal_thickness_inches = col_double(),
+  `liner_from_ft-bgl` = col_double(),
+  `liner_to_ft-bgl` = col_double(),
+  screen_intake_method_code = col_character(),
+  screen_type_code = col_character(),
+  screen_material_code = col_character(),
+  other_screen_material = col_character(),
+  screen_information = col_character(),
+  screen_opening_code = col_character(),
+  screen_bottom_code = col_character(),
+  other_screen_bottom = col_character(),
+  filter_pack_from_ft = col_double(),
+  filter_pack_to_ft = col_double(),
+  filter_pack_material_code = col_character(),
+  filter_pack_thickness_inches = col_double(),
+  filter_pack_material_size_code = col_character(),
+  development_hours = col_double(),
+  development_notes = col_character(),
+  water_quality_colour = col_character(),
+  water_quality_odour = col_character(),
+  yield_estimation_method_code = col_character(),
+  yield_estimation_rate_usgpm = col_double(),
+  yield_estimation_duration_hours = col_double(),
+  `static_level_before_test_ft-btoc` = col_double(),
+  `drawdown_ft-btoc` = col_double(),
+  hydro_fracturing_performed = col_character(),
+  hydro_fracturing_yield_increase = col_double(),
+  decommission_reason = col_character(),
+  decommission_method_code = col_character(),
+  decommission_details = col_character(),
+  decommission_sealant_material = col_character(),
+  decommission_backfill_material = col_character(),
+  comments = col_character(),
+  ems = col_character(),
+  person_responsible = col_character(),
+  company_of_person_responsible = col_character(),
+  aquifer_id = col_double(),
+  avi_years = col_character(),
+  storativity = col_double(),
+  `transmissivity_m^2/s` = col_double(),
+  `hydraulic_conductivity_m/s` = col_double(),
+  `specific_storage_1/m` = col_character(),
+  specific_yield = col_double(),
+  testing_method = col_character(),
+  testing_duration_hours = col_double(),
+  analytic_solution_type = col_character(),
+  boundary_effect_code = col_character(),
+  aquifer_lithology_code = col_character(),
+  `artesian_pressure_head_ft-agl` = col_double(),
+  artesian_conditions = col_character(),
+  fullAddress = col_character(),
+  civicNumber = col_double(),
+  civicNumberSuffix = col_character(),
+  streetName = col_character(),
+  streetType = col_character(),
+  isStreetTypePrefix = col_character(),
+  streetDirection = col_character(),
+  isStreetDirectionPrefix = col_character(),
+  streetQualifier = col_character(),
+  localityName = col_character(),
+  nr_district_name = col_character(),
+  nr_region_name = col_character(), 
+  streetAddress = col_character(),
+  distance_geocode = col_double(),
+  distance_to_matching_pid = col_double(),
+  score_address = col_double(),
+  score_location_description = col_double(),
+  score_city = col_double(),
+  xref_ind = col_character(),
+  alr_ind = col_character(),
+  btm_label = col_character(),
+  esa_landclass = col_character()  
+)
+
+
+
+gwells_data_first_appearance <-
+  read_csv("https://raw.githubusercontent.com/SimonCoulombe/gwells_geocode_and_archive_data/main/data/gwells_data_first_appearance.csv",
+           col_types = col_types_wells)
+
+gwells_geocoded <- read_csv("https://raw.githubusercontent.com/SimonCoulombe/gwells_geocode_and_archive_data/main/data/wells_geocoded.csv",
+                     col_types= col_types_geocoded) %>%
+  select(-X1)
+
+
+gwells_qa  <- read_csv("https://raw.githubusercontent.com/SimonCoulombe/gwells_geocode_and_archive_data/main/data/gwells_locationqa.csv",
+                    col_types = col_types_qa
+                  ) 
+
+
+
+dbWriteTable(conn = con1, 
+             name = "gwells_data_first_appearance", 
+             value = gwells_data_first_appearance, 
+             row.names = FALSE, 
+             overwrite = TRUE)
+
+
+
+dbWriteTable(conn = con1, 
+             name = "gwells_geocoded", 
+             value = gwells_geocoded, 
+             row.names = FALSE, 
+             overwrite = TRUE)
+
+
+dbWriteTable(conn = con1, 
+             name = "gwells_qa", 
+             value = gwells_qa, 
+             row.names = FALSE, 
+             overwrite = TRUE)
+
+
+# create index, pas trop nécessaire
+dbExecute(con1, "CREATE INDEX IF NOT EXISTS gwells_data_first_appearance_wtn ON gwells_data_first_appearance (well_tag_number);") 
+dbExecute(con1, "CREATE INDEX IF NOT EXISTS gwells_geocoded_wtn ON gwells_geocoded (well_tag_number);")
+dbExecute(con1, "CREATE INDEX IF NOT EXISTS gwells_qa_wtn ON gwells_qa (well_tag_number);") 
+
+
