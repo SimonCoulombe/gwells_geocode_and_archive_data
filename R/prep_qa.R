@@ -44,9 +44,7 @@ if(length(well_tag_number_that_need_QA)>0){
   
   wells_geocoded_for_csv <- tbl(con1, "wells_geocoded" ) %>% 
     filter(well_tag_number %in% well_tag_number_that_need_QA)     %>%
-    rename(latitude_Decdeg = latitude_decdeg, 
-           longitude_Decdeg = longitude_decdeg,
-           fullAddress = full_address,
+    rename(fullAddress = full_address,
            civicNumber = civic_number,
            civicNumberSuffix = civic_number_suffix,
            isStreetTypePrefix = is_street_type_prefix,
@@ -67,9 +65,7 @@ if(length(well_tag_number_that_need_QA)>0){
       ) , "data/wells.csv")
   write_csv(
     dbGetQuery(con1, "select * from wells_geocoded limit 0")     %>%
-      rename(latitude_Decdeg = latitude_decdeg, 
-             longitude_Decdeg = longitude_decdeg,
-             fullAddress = full_address,
+      rename(fullAddress = full_address,
              civicNumber = civic_number,
              civicNumberSuffix = civic_number_suffix,
              isStreetTypePrefix = is_street_type_prefix,
