@@ -48,7 +48,7 @@ new_wells <- newest_wells_file %>%
   janitor::clean_names()
 
 if(nrow(new_wells)> 0){
-  message("Appending new wells:", nrow(new_wells, " rows"))
+  message("Appending new wells:", nrow(new_wells), " rows.", new_wells$well_tag_number)
   dbAppendTable(con1, "wells", new_wells)
   
 } else{message("No new wells to append.")}
