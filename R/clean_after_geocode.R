@@ -13,7 +13,9 @@ con1 <- DBI::dbConnect(
 )
 
 # this is the list of well we geocoded today
-newly_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_geocoded)
+newly_geocoded <- read_csv("data/wells_geocoded.csv", col_types = col_types_geocoded) %>% 
+  mutate(date_geocoded = as.Date(Sys.time() , tz = "America/Vancouver")) %>%
+  janitor::clean_names()
 
 if(nrow(newly_geocoded)> 0){
   message("Appending newly geocoded  wells:", nrow(newly_geocoded, " rows"))
