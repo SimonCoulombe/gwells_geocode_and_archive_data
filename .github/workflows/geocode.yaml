@@ -1,8 +1,8 @@
 on: 
+  workflow_dispatch:
   push:
     paths:
       - .github/workflows/geocode.yaml
-      - R/archive_new_wells.R
       - R/prep_geocode.R
       - R/clean_after_geocode.R
 jobs:

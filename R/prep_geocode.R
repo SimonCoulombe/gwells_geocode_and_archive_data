@@ -42,3 +42,7 @@ write.csv(to_geocode %>%
                    longitude_Decdeg = longitude_decdeg
             )
           , "data/wells.csv")
+
+if(nrow(to_geocode)>0){
+  message("Geocoding ", nrow(to_geocode)," rows. well_tag_number= ", paste(to_geocode$well_tag_number))
+} else {message("no new wells to geocode")}
