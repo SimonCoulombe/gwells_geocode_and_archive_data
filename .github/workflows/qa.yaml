@@ -26,23 +26,26 @@ jobs:
           mv data github_data
           wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
           #mkdir data  
-          mv /GWELLS_LocationQA/data /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data
+          cp /GWELLS_LocationQA/data /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data
       - name: prepare csv for  quality assurance
         run: |
           Rscript R/prep_qa.R
       - name: ls *
         run: |
           ls * -lh
-      - name: ls *
+      - name: ls data *
         run: |
           ls data/* -lh
+      - name: ls GWELLS_LocationQA *
+        run: |
+          ls /GWELLS_LocationQA/* -lh          
       - name: run qa script
         run:  |
           ./python/qa.sh
       - name: ls *
         run: |
           ls * -lh
-      - name: ls *
+      - name: ls data *
         run: |
           ls data/* -lh
       - name: clean afer qa
