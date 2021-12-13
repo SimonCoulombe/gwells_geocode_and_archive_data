@@ -37,7 +37,10 @@ if(length(well_tag_number_that_need_QA)>0){
     filter(well_tag_number %in% well_tag_number_that_need_QA)
   
   write.csv(
-    wells_for_csv, "data/wells.csv") # overwrite wells_geocoded.csv and wells.csv to allow script to run..
+    wells_for_csv%>%
+      rename(latitude_Decdeg = latitude_decdeg, 
+             longitude_Decdeg = longitude_decdeg
+      ), "data/wells.csv") # overwrite wells_geocoded.csv and wells.csv to allow script to run..
   
   wells_geocoded_for_csv <- tbl(con1, "wells_geocoded" ) %>% 
     filter(well_tag_number %in% well_tag_number_that_need_QA)   
