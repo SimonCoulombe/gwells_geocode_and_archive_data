@@ -1,10 +1,9 @@
 on: 
   push:
     paths:
-      - .github/workflows/geocode.yaml
-      - R/archive_new_wells.R
-      - R/prep_geocode.R
-      - R/clean_after_geocode.R
+      - .github/workflows/qa.yaml
+      - R/prep_qa.R
+      - R/clean_after_qa.R
 jobs:
   job1:
     runs-on: ubuntu-latest
