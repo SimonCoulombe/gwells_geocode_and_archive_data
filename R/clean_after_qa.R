@@ -20,9 +20,9 @@ glimpse(old_qa)
 
 
 newly_qa <- read_csv("gwells_locationqa.csv", col_types = col_types_qa) %>%
-  select(-one_of(c("Unnamed: 0"))) %>% 
+  select(-one_of(c("Unnamed: 0", "date_added"))) %>% 
   mutate(date_qa = as.Date(Sys.time() , tz = "America/Vancouver")) %>%
-  janitor::clean_names()
+  janitor::clean_names() 
 
 
 if(nrow(newly_qa)> 0){
