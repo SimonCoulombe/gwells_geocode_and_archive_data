@@ -44,5 +44,5 @@ write.csv(to_geocode %>%
           , "data/wells.csv")
 
 if(nrow(to_geocode)>0){
-  message("Geocoding ", nrow(to_geocode)," rows. well_tag_number= ", paste(to_geocode$well_tag_number))
+  message("Geocoding ", nrow(to_geocode)," rows. well_tag_number= ", paste(to_geocode$well_tag_number, collapse = " "))
 } else {message("no new wells to geocode")}
