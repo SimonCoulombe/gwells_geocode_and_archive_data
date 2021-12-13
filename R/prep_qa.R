@@ -48,7 +48,7 @@ if(length(well_tag_number_that_need_QA)>0){
            civicNumber = civic_number,
            civicNumberSuffix = civic_number_suffix,
            isStreetTypePrefix = is_street_type_prefix,
-           streetDirection , street_direction,
+           streetDirection = street_direction,
            isStreetDirectionPrefix = is_street_direction_prefix,
            streetQualifier = street_qualifier,
            localityName = locality_name
@@ -69,7 +69,7 @@ if(length(well_tag_number_that_need_QA)>0){
              civicNumber = civic_number,
              civicNumberSuffix = civic_number_suffix,
              isStreetTypePrefix = is_street_type_prefix,
-             streetDirection , street_direction,
+             streetDirection = street_direction,
              isStreetDirectionPrefix = is_street_direction_prefix,
              streetQualifier = street_qualifier,
              localityName = locality_name
