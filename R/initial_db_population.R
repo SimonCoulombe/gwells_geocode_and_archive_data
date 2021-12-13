@@ -63,9 +63,7 @@ con1 <- DBI::dbConnect(
 
 wells <- read_csv("~/git/GWELLS_LocationQA/data/wells.csv",
                   col_types = col_types_wells) %>%
-  filter(well_tag_number <= 124480)
-
-wells <- wells %>% 
+  filter(well_tag_number <= 124480)  %>% 
   mutate(date_added = lubridate::ymd("20211213")) %>%
   janitor::clean_names()
 

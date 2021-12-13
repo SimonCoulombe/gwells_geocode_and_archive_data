@@ -22,7 +22,7 @@ wells_in_db <- dbGetQuery(con1, "select well_tag_number, latitude_decdeg, longit
 
 # read the list of wells that have already been geocoded  
 #geocoded <- read_csv("github_data/wells_geocoded.csv", col_types = col_types_geocoded)
-wells_geocoded_in_db <- dbGetQuery(con1, "select well_tag_number from wells") 
+wells_geocoded_in_db <- dbGetQuery(con1, "select well_tag_number from wells_geocoded") 
 
 
 # this is the list of wells that need geocoding
