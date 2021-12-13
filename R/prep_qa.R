@@ -34,22 +34,52 @@ well_tag_number_that_need_QA <- wells_in_db %>%
 if(length(well_tag_number_that_need_QA)>0){
   message(length(well_tag_number_that_need_QA), " records need QA. ", paste(well_tag_number_that_need_QA, collapse = " "))
   wells_for_csv <- tbl(con1, "wells" ) %>% 
-    filter(well_tag_number %in% well_tag_number_that_need_QA)
+    filter(well_tag_number %in% well_tag_number_that_need_QA) %>%
+    rename(latitude_Decdeg = latitude_decdeg, 
+           longitude_Decdeg = longitude_decdeg
+    )
   
   write.csv(
-    wells_for_csv%>%
-      rename(latitude_Decdeg = latitude_decdeg, 
-             longitude_Decdeg = longitude_decdeg
-      ), "data/wells.csv") # overwrite wells_geocoded.csv and wells.csv to allow script to run..
+    wells_for_csv, "data/wells.csv") # overwrite wells_geocoded.csv and wells.csv to allow script to run..
   
   wells_geocoded_for_csv <- tbl(con1, "wells_geocoded" ) %>% 
-    filter(well_tag_number %in% well_tag_number_that_need_QA)   
+    filter(well_tag_number %in% well_tag_number_that_need_QA)     %>%
+    rename(latitude_Decdeg = latitude_decdeg, 
+           longitude_Decdeg = longitude_decdeg,
+           fullAddress = full_address,
+           civicNumber = civic_number,
+           civicNumberSuffix = civic_number_suffix,
+           isStreetTypePrefix = is_street_type_prefix,
+           streetDirection , street_direction,
+           isStreetDirectionPrefix = is_street_direction_prefix,
+           streetQualifier = street_qualifier,
+           localityName = locality_name
+    )
+  
+  
   write.csv(wells_geocoded_for_csv, "data/wells_geocoded.csv")
 } else {
   message("no record need QA")
-  write_csv(dbGetQuery(con1, "select * from wells limit 0") , "data/wells.csv")
-  write_csv(dbGetQuery(con1, "select * from wells_geocoded limit 0") , "data/wells_geocoded.csv")
+  write_csv(
+    dbGetQuery(con1, "select * from wells limit 0")  %>%
+      rename(latitude_Decdeg = latitude_decdeg, 
+             longitude_Decdeg = longitude_decdeg
+      ) , "data/wells.csv")
+  write_csv(
+    dbGetQuery(con1, "select * from wells_geocoded limit 0")     %>%
+      rename(latitude_Decdeg = latitude_decdeg, 
+             longitude_Decdeg = longitude_decdeg,
+             fullAddress = full_address,
+             civicNumber = civic_number,
+             civicNumberSuffix = civic_number_suffix,
+             isStreetTypePrefix = is_street_type_prefix,
+             streetDirection , street_direction,
+             isStreetDirectionPrefix = is_street_direction_prefix,
+             streetQualifier = street_qualifier,
+             localityName = locality_name
+      ),
+    "data/wells_geocoded.csv")
   
-  }
+}
 
 
