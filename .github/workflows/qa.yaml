@@ -27,6 +27,9 @@ jobs:
           wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
           #mkdir data  
           cp -r /GWELLS_LocationQA/data /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data
+      - name: run download script
+        run:  |
+          ./python/download.sh
       - name: prepare csv for  quality assurance
         run: |
           Rscript R/prep_qa.R
