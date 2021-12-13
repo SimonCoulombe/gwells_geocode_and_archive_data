@@ -57,12 +57,13 @@ con1 <- DBI::dbConnect(
 
 # Option B : load from PC.
 
-dbExecute(con1, "drop table gwells_data_first_appearance;")
-dbExecute(con1, "drop table gwells_geocoded;")
-dbExecute(con1, "drop table gwells_qa;") 
+#dbExecute(con1, "drop table wells;")
+#dbExecute(con1, "drop table wells_geocoded;")
+#dbExecute(con1, "drop table wells_qa;") 
 
 wells <- read_csv("~/git/GWELLS_LocationQA/data/wells.csv",
-                  col_types = col_types_wells)
+                  col_types = col_types_wells) %>%
+  filter(well_tag_number <= 124480)
 
 wells <- wells %>% 
   mutate(date_added = lubridate::ymd("20211213")) %>%
@@ -75,14 +76,17 @@ dbWriteTable(conn = con1,
              overwrite = TRUE)
 
 wells_geocoded1 <- read_csv("~/git/GWELLS_LocationQA/data/wells_geocoded.csv",
-                  col_types = col_types_geocoded)
+                  col_types = col_types_geocoded) %>%
+  filter(well_tag_number <= 124480)
 
 wells_with_no_latlon <- wells %>% filter(is.na(latitude_decdeg) | is.na(longitude_decdeg)) %>% select(well_tag_number)
 
 wells_geocoded <- wells_geocoded1 %>%
   anti_join(wells_with_no_latlon) %>%
-  mutate(date_geocoded = lubridate::ymd("20211213"))
+  mutate(date_geocoded = lubridate::ymd("20211213")) %>%
+  janitor::clean_names()
 
+write_csv(wells_geocoded, "~/git/GWELLS_LocationQA/data/wells_geocoded.csv")
 
 dbWriteTable(conn = con1, 
              name = "wells_geocoded", 
@@ -91,9 +95,11 @@ dbWriteTable(conn = con1,
              overwrite = TRUE)
 
 wells_qa <- read_csv("~/git/GWELLS_LocationQA/gwells_locationqa.csv",
-                            col_types = col_types_qa)
-
-
+                            col_types = col_types_qa) %>%
+  anti_join(wells_with_no_latlon) %>%
+  filter(well_tag_number <= 124480) %>%
+  mutate(date_qa = lubridate::ymd("20211213")) %>%
+  janitor::clean_names()
 
 dbWriteTable(conn = con1, 
              name = "wells_qa", 
