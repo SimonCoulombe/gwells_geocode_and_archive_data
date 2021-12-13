@@ -24,9 +24,9 @@ source("R/col_types_wells.R")
 #as.Date(Sys.time() , tz = "America/Vancouver")
 
 # read the  frehsly downloaded data/wells.csv downloaded by the python script.
-#newest_wells_file <- read_csv("data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
+newest_wells_file <- read_csv("data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
 
-newest_wells_file <- read_csv("~/git/GWELLS_LocationQA/data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
+#newest_wells_file <- read_csv("~/git/GWELLS_LocationQA/data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
 
 # gwells_data_first_appearance <- 
 #   read_csv(
