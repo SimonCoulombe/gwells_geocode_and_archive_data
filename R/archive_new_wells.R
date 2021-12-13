@@ -1,6 +1,17 @@
 library(dplyr)
 library(readr)
 library(janitor)
+library(DBI)
+library(RPostgres)
+source("R/col_types_wells.R")
+con1 <- DBI::dbConnect(
+  #RPostgreSQL::PostgreSQL(),
+  RPostgres::Postgres(),
+  dbname = Sys.getenv("BCGOV_DB"),
+  host = Sys.getenv("BCGOV_HOST"),
+  user = Sys.getenv("BCGOV_USR"),
+  password=Sys.getenv("BCGOV_PWD")
+)
 
 #library(reticulate)
 #use_condaenv(condaenv = "gwells_locationqa", required= TRUE)
@@ -13,33 +24,28 @@ source("R/col_types_wells.R")
 #as.Date(Sys.time() , tz = "America/Vancouver")
 
 # read the  frehsly downloaded data/wells.csv downloaded by the python script.
-current_well <- read_csv("data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
+#newest_wells_file <- read_csv("data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
 
-gwells_data_first_appearance <- 
-  read_csv(
-    "github_data/gwells_data_first_appearance.csv",
-    col_types = col_types_wells
-    )
+newest_wells_file <- read_csv("~/git/GWELLS_LocationQA/data/wells.csv" , col_types = col_types_wells) # coltypes from R/coltypes_we
 
+# gwells_data_first_appearance <- 
+#   read_csv(
+#     "github_data/gwells_data_first_appearance.csv",
+#     col_types = col_types_wells
+#     )
+
+wells_in_db <- dbGetQuery(con1, "select well_tag_number from wells") 
+
+
+test <-  dbGetQuery(con1, "select * from wells limit 100") 
 #------------------------------------------------------------
 # Update historical caracteristics of wells on the day they were added
 #------------------------------------------------------------
 
-new_wells <- current_well %>%
-  anti_join(gwells_data_first_appearance %>% select(well_tag_number)) %>%
-  mutate(date_added = as.Date(Sys.time() , tz = "America/Vancouver"))
-
-# this is our  new list of date added, overwrite the old one
-gwells_data_first_appearance <-
-  bind_rows(gwells_data_first_appearance, new_wells)
-
-write_csv(gwells_data_first_appearance, "data/gwells_data_first_appearance.csv")
+new_wells <- newest_wells_file %>%
+  anti_join(wells_in_db) %>%
+  mutate(date_added = as.Date(Sys.time() , tz = "America/Vancouver")) %>%
+  janitor::clean_names()
 
 
-# this is the list of well_tag_number in the csv today, might be useful to rebuild the list of dates added one day
-# Initial idea was to save all the data every day, but 50 MB is too heavy for us..
-well_tags_in_current_wells <-current_well  %>% select(well_tag_number)
-write_csv(well_tags_in_current_wells, paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Vancouver"), "%Y%m%d")  ,".csv"))
-zip(paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Vancouver"), "%Y%m%d")  ,".zip"),
-    paste0("data/well_tag_numbers_",format(as.Date(Sys.time() , tz = "America/Vancouver"), "%Y%m%d")  ,".csv")
-)
+dbAppendTable(con1, "wells", new_wells)

@@ -17,10 +17,11 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
     steps:
       - uses: actions/checkout@v2
-      - name : copy gwells_geocodeqa script
+      - name : copy gwells_geocode python script
         run: | 
           mv data github_data
-          cp /GWELLS_LocationQA/gwells_locationqa.py /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/
+          wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
+#          cp /GWELLS_LocationQA/gwells_locationqa.py /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/
       - name: run download script
         run:  |
           ./python/download.sh
@@ -33,104 +34,104 @@ jobs:
       - name: list files  data
         run:  |
           ls data/*          
-      - name: commit that shit  
-        run: |      
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
-          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
-          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
-          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-          git commit -am "add data - automatic update"|| echo "No changes to commit"
-          git push origin|| echo "No changes to commit"          
-          
-      - name: prepare csvs for geocode input
-        run: |
-          Rscript R/prep_geocode.R
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh
-      - name: run geocode python script
-        run:  |
-          ./python/geocode.sh          
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh        
-      - name: clean afer geocode
-        run: |
-          Rscript R/clean_after_geocode.R          
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh            
-      - name: copy esa.tif 
-        run: |
-          cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
-      - name: commit that shit  
-        run: |      
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
-          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
-          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
-          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-          git commit -am "add data - automatic update"|| echo "No changes to commit"
-          git push origin|| echo "No changes to commit"          
-      - name: prepare csv for  quality assurance
-        run: |
-          Rscript R/prep_qa.R
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh        
-      - name: run qa script
-        run:  |
-          ./python/qa.sh          
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh        
-      - name: clean afer qa
-        run: |
-          Rscript R/clean_after_qa.R          
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh                  
-      - name: move archived zip files back from github_data to data so that we dont delete them from repo
-        run: |
-          mv -n mv github_data/well_tag_number*.zip data/ 
-      - name: ls *
-        run: |
-          ls * -lh
-      - name: ls *
-        run: |
-          ls data/* -lh   
-          
-      - name: commit that shit  
-        run: |      
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
-          git add "data/wells_geocoded.csv"|| echo "No changes to commit"
-          git add "data/wells_locationqa.csv"|| echo "No changes to commit"
-          git add "data/well_tag_number*.zip"|| echo "No changes to commit"
-          git commit -am "add data - automatic update"|| echo "No changes to commit"
-          git push origin|| echo "No changes to commit"
+      # - name: commit that shit  
+      #   run: |      
+      #     git config --local user.email "actions@github.com"
+      #     git config --local user.name "GitHub Actions"
+      #     git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+      #     git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+      #     git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+      #     git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+      #     git commit -am "add data - automatic update"|| echo "No changes to commit"
+      #     git push origin|| echo "No changes to commit"          
+      #     
+      # - name: prepare csvs for geocode input
+      #   run: |
+      #     Rscript R/prep_geocode.R
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh
+      # - name: run geocode python script
+      #   run:  |
+      #     ./python/geocode.sh          
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh        
+      # - name: clean afer geocode
+      #   run: |
+      #     Rscript R/clean_after_geocode.R          
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh            
+      # - name: copy esa.tif 
+      #   run: |
+      #     cp /GWELLS_LocationQA/data/esa_bc.tif /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/
+      # - name: commit that shit  
+      #   run: |      
+      #     git config --local user.email "actions@github.com"
+      #     git config --local user.name "GitHub Actions"
+      #     git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+      #     git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+      #     git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+      #     git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+      #     git commit -am "add data - automatic update"|| echo "No changes to commit"
+      #     git push origin|| echo "No changes to commit"          
+      # - name: prepare csv for  quality assurance
+      #   run: |
+      #     Rscript R/prep_qa.R
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh        
+      # - name: run qa script
+      #   run:  |
+      #     ./python/qa.sh          
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh        
+      # - name: clean afer qa
+      #   run: |
+      #     Rscript R/clean_after_qa.R          
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh                  
+      # - name: move archived zip files back from github_data to data so that we dont delete them from repo
+      #   run: |
+      #     mv -n mv github_data/well_tag_number*.zip data/ 
+      # - name: ls *
+      #   run: |
+      #     ls * -lh
+      # - name: ls *
+      #   run: |
+      #     ls data/* -lh   
+      #     
+      # - name: commit that shit  
+      #   run: |      
+      #     git config --local user.email "actions@github.com"
+      #     git config --local user.name "GitHub Actions"
+      #     git add "data/gwells_data_first_appearance.csv"|| echo "No changes to commit"
+      #     git add "data/wells_geocoded.csv"|| echo "No changes to commit"
+      #     git add "data/wells_locationqa.csv"|| echo "No changes to commit"
+      #     git add "data/well_tag_number*.zip"|| echo "No changes to commit"
+      #     git commit -am "add data - automatic update"|| echo "No changes to commit"
+      #     git push origin|| echo "No changes to commit"
       - name: Session info
         run: |
           options(width = 100)
