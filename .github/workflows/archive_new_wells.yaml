@@ -1,0 +1,42 @@
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/archive_new_wells.yaml
+      - R/archive_new_wells.R
+  schedule:
+    - cron: "0 6 * * *"      
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    container: 
+      image: morglum/monrstudio
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      BCGOV_GEOCODER_API: ${{ secrets.BCGOV_GEOCODER_API }}    
+      BCGOV_DB: ${{ secrets.BCGOV_DB }}    
+      BCGOV_HOST: ${{ secrets.BCGOV_HOST }}    
+      BCGOV_PWD: ${{ secrets.BCGOV_PWD }}    
+      BCGOV_USR: ${{ secrets.BCGOV_USR }}    
+      
+    steps:
+      - uses: actions/checkout@v2
+      - name : copy gwells_geocode python script
+        run: | 
+          mv data github_data 
+          wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
+      - name: run download script
+        run:  |
+          ./python/download.sh
+      - name: list files 
+        run:  |
+          ls * -lh
+      - name: archive new wells
+        run: |
+          Rscript R/archive_new_wells.R            
+      - name: list files  data
+        run:  |
+          ls data/*          

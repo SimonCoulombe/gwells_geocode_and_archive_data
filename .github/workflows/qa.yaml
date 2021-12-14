@@ -1,0 +1,64 @@
+on: 
+  push:
+    paths:
+      - .github/workflows/qa.yaml
+      - R/prep_qa.R
+      - R/clean_after_qa.R
+  schedule:
+    - cron: "0 7 * * *"            
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    container: 
+      image: morglum/monrstudio
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
+      BCGOV_GEOCODER_API: ${{ secrets.BCGOV_GEOCODER_API }}    
+      BCGOV_DB: ${{ secrets.BCGOV_DB }}    
+      BCGOV_HOST: ${{ secrets.BCGOV_HOST }}    
+      BCGOV_PWD: ${{ secrets.BCGOV_PWD }}    
+      BCGOV_USR: ${{ secrets.BCGOV_USR }}          
+    steps:
+      - uses: actions/checkout@v2
+      - name : copy gwells_geocodeqa script
+        run: | 
+          mv data github_data
+          wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
+          #mkdir data  
+          cp -r /GWELLS_LocationQA/data /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data
+      - name: run download script
+        run:  |
+          ./python/download.sh
+      - name: prepare csv for  quality assurance
+        run: |
+          Rscript R/prep_qa.R
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls data *
+        run: |
+          ls data/* -lh
+      - name: ls GWELLS_LocationQA *
+        run: |
+          ls /GWELLS_LocationQA/* -lh          
+      - name: run qa script
+        run:  |
+          ./python/qa.sh
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls data *
+        run: |
+          ls data/* -lh
+      - name: clean afer qa
+        run: |
+          Rscript R/clean_after_qa.R
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}

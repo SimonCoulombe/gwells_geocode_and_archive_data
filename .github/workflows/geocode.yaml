@@ -1,0 +1,64 @@
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/geocode.yaml
+      - R/prep_geocode.R
+      - R/clean_after_geocode.R
+  schedule:
+    - cron: "30 6 * * *"            
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    container: 
+      image: morglum/monrstudio
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}    
+      BCGOV_GEOCODER_API: ${{ secrets.BCGOV_GEOCODER_API }}    
+      BCGOV_DB: ${{ secrets.BCGOV_DB }}    
+      BCGOV_HOST: ${{ secrets.BCGOV_HOST }}    
+      BCGOV_PWD: ${{ secrets.BCGOV_PWD }}    
+      BCGOV_USR: ${{ secrets.BCGOV_USR }}          
+    steps:
+      - uses: actions/checkout@v2
+      - name : copy gwells_geocodeqa script
+        run: | 
+          mv data github_data
+          wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
+          mkdir data  
+      - name: prepare csvs for geocode input
+        run: |
+          Rscript R/prep_geocode.R
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh
+      - name: run geocode python script
+        run:  |
+          ./python/geocode.sh          
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh        
+      - name: clean afer geocode
+        run: |
+          Rscript R/clean_after_geocode.R          
+      - name: ls *
+        run: |
+          ls * -lh
+      - name: ls *
+        run: |
+          ls data/* -lh                  
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}
