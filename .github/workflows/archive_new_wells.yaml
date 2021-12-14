@@ -4,6 +4,8 @@ on:
     paths:
       - .github/workflows/archive_first_seen_data.yaml
       - R/archive_new_wells.R
+  schedule:
+    - cron: "0 6 * * *"      
 jobs:
   job1:
     runs-on: ubuntu-latest
