@@ -6,7 +6,7 @@ on:
       - R/prep_geocode.R
       - R/clean_after_geocode.R
   schedule:
-    - cron: "0 7 * * *"            
+    - cron: "30 6 * * *"            
 jobs:
   job1:
     runs-on: ubuntu-latest
