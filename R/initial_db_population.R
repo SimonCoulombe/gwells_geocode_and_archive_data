@@ -61,6 +61,29 @@ con1 <- DBI::dbConnect(
 #dbExecute(con1, "drop table wells_geocoded;")
 #dbExecute(con1, "drop table wells_qa;") 
 
+## ajouter drilling method 
+url <- "https://s3.ca-central-1.amazonaws.com/gwells-export/export/v2/gwells.zip"
+temp_zip <- tempfile()
+download.file(url, destfile = temp_zip)
+temp_dir <- tempdir()
+utils::unzip(temp_zip,exdir = temp_dir) 
+
+
+drilling_method <-  read_csv(
+  paste0(temp_dir, "/drilling_method.csv")  ,
+  col_types = cols(well_tag_number = col_double(), drilling_method_code = col_character())
+)  %>%
+  mutate(date_added = lubridate::ymd("20211213"))
+
+
+dbWriteTable(conn = con1, 
+             name = "drilling_method", 
+             value = drilling_method, 
+             row.names = FALSE, 
+             overwrite = TRUE)
+
+
+
 wells <- read_csv("~/git/GWELLS_LocationQA/data/wells.csv",
                   col_types = col_types_wells) %>%
   filter(well_tag_number <= 124480)  %>% 
