@@ -28,9 +28,10 @@ jobs:
         run: | 
           mv data github_data 
           wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
-      - name: run download script
-        run:  |
-          ./python/download.sh
+          mkdir data  
+#      - name: run download script
+#        run:  |
+#          ./python/download.sh
       - name: list files 
         run:  |
           ls * -lh
