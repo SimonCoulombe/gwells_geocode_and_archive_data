@@ -29,6 +29,7 @@ jobs:
           mv data github_data 
           wget https://raw.githubusercontent.com/bcgov/GWELLS_LocationQA/main/gwells_locationqa.py
           mkdir /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data  
+          touch /__w/gwells_geocode_and_archive_data/gwells_geocode_and_archive_data/data/touched  
 #      - name: run download script
 #        run:  |
 #          ./python/download.sh
