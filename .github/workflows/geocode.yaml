@@ -5,8 +5,8 @@ on:
       - .github/workflows/geocode.yaml
       - R/prep_geocode.R
       - R/clean_after_geocode.R
-  schedule:
-    - cron: "30 6 * * *"            
+#  schedule:
+#    - cron: "30 6 * * *"            
 jobs:
   job1:
     runs-on: ubuntu-latest
