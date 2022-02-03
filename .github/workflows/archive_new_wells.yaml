@@ -4,8 +4,8 @@ on:
     paths:
       - .github/workflows/archive_new_wells.yaml
       - R/archive_new_wells.R
-  schedule:
-    - cron: "0 6 * * *"      
+#  schedule:
+#    - cron: "0 6 * * *"      
 jobs:
   job1:
     runs-on: ubuntu-latest
