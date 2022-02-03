@@ -4,8 +4,8 @@ on:
       - .github/workflows/qa.yaml
       - R/prep_qa.R
       - R/clean_after_qa.R
-  schedule:
-    - cron: "0 7 * * *"            
+#  schedule:
+#    - cron: "0 7 * * *"            
 jobs:
   job1:
     runs-on: ubuntu-latest
